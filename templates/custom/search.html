@@ -1,0 +1,57 @@
+{#
+    Search and date filter html here    
+#}
+
+<div class="list-search-container search-common-view">
+    <form id="global_search_form" class="form-inline" role="form"
+        onsubmit="document.getElementById('custom_filter_btn').click();return false;">
+        <!-- <div class="form-group">
+            <div class="nav-toggle">
+                    <button class="btn btn-toggle toggle-sidebar">
+                        <i class="fa fa-bars"></i>
+                    </button>
+            </div>
+        </div> -->
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-search custom-search"></i></div>
+                <select class="form-control custom-width" id="global_search_filter" name="states[]" multiple="multiple">
+                </select>
+            </div>
+        </div>
+        <!-- <div class="form-group ellipsis-v-sec">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <div class="vertical-dots-container">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                </span>
+            </div>
+        </div> -->
+        <div class="form-group dates-filter-sec">
+            <input type="text" class="dn" style="display: none" id="billDate_filter" />
+            <label>Dates</label>
+            <input type="text" class="custom-daterangepicker form-control" id="date_range_filter" />
+        </div>
+
+
+        <div class="form-group ellipsis-v-sec">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <div class="vertical-dots-container">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="button" class="refresh_btn_main" id="clear_main_btn" onclick="$('#clear_filter_btn').click()">
+                <i class="fa fa-refresh"></i> Reset
+            </button>
+        </div>
+    </form>
+</div>

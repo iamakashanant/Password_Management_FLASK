@@ -1,0 +1,111 @@
+<!-- Sidebar -->
+<div class="sidebar-wrapper scrollbar scrollbar-inner">
+    <div class="sidebar-content">
+        <ul class="nav nav-primary">
+            <!-- <li class="nav-item {{'active' if request.path == '/dashboards/custom_dashboard/' else ''}}">
+                <a href="{{url_for('CustomDashboard.customDash',dashboard_name='custom_dashboard')}}">
+                    <img src="/../../static/assets/icons/Dashboard.svg" alt="" class="icon-sidebar-menu" />
+                    <p style="display: none;" class="hide-menu">Dashboard</p>
+                </a>
+            </li> -->
+            <li class="nav-item {{'active' if request.path == '/dashboards/snapview/' else ''}}">
+                <a href="{{url_for('CustomDashboard.customDash',dashboard_name='snapview')}}">
+                    <img src="/../../static/assets/icons/SnapView.svg" alt="" class="icon-sidebar-menu" />
+                    <p style="display: none;" class="hide-menu">Snap View</p>
+                </a>
+            </li>
+            <!-- <li class="nav-item {{'active' if request.path == '/dashboards/magniview/' else ''}}">
+                <a href="{{url_for('CustomDashboard.customDash',dashboard_name='magniview')}}">
+                    <img src="/../../static/assets/icons/MagniView.svg" alt="" class="icon-sidebar-menu" />
+                    <p style="display: none;" class="hide-menu">Magni View</p>
+                </a>
+            </li> -->
+            <li class="nav-item {{'active' if request.path == '/dashboards/itemview/' else ''}}">
+                <a href="{{url_for('CustomDashboard.customDash',dashboard_name='itemview')}}">
+                    <img src="/../../static/assets/icons/ItemView.svg" alt="" class="icon-sidebar-menu" />
+                    <p style="display: none;" class="hide-menu">Item View</p>
+                </a>
+            </li>
+            <li class="nav-item {{'active' if request.path == '/dashboards/mapview/' else ''}}">
+                <a href="{{url_for('CustomDashboard.customDash',dashboard_name='mapview')}}">
+                    <img src="/../../static/assets/icons/MapView.svg" alt="" class="icon-sidebar-menu" />
+                    <p style="display: none;" class="hide-menu">Map View</p>
+                </a>
+            </li>
+            <!-- <li class="nav-item {{'active' if request.path == '/dashboards/pivotview/' else ''}}">
+                <a href="{{url_for('CustomDashboard.customDash',dashboard_name='pivotview')}}">
+                    <img src="/../../static/assets/icons/PivotView.svg" alt="" class="icon-sidebar-menu" />
+                    <p style="display: none;" class="hide-menu">Pivot View</p>
+                </a>
+            </li> -->
+            <li class="nav-item {{'active' if request.path == '/dashboards/salesview/' else ''}}">
+                <a href="{{url_for('CustomDashboard.customDash',dashboard_name='salesview')}}">
+                    <img src="/../../static/assets/icons/SalesView.svg" alt="" class="icon-sidebar-menu" />
+                    <p style="display: none;" class="hide-menu">Sales View</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a data-toggle="collapse" data-target="#master" class="collapsed" aria-expanded="false">
+                    <img src="/../../static/assets/icons/Masters.svg" alt="" class="icon-sidebar-menu" />
+                    <p style="display: none;" class="hide-menu">Master</p>
+                    <span class="down-caret"></span>
+                </a>
+                <div class="collapse dropdown-custom" id="master">
+                    <ul class="nav nav-collapse">
+                        <li>
+                            <a href="{{url_for('CustomMenus.customerMasterDashboard')}}">
+                                <span class="sub-item">Customer</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{url_for('CustomMenus.productMasterDashboard')}}">
+                                <span class="sub-item">Product</span>
+                            </a>
+                        </li>
+                        <!-- <li>
+                            <a href="#">
+                                <span class="sub-item">Sales Item</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="sub-item">Customer Magni</span>
+                            </a>
+                        </li> -->
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a data-toggle="collapse" data-target="#settings" class="collapsed" aria-expanded="false">
+                    <img src="/../../static/assets/icons/Settings.png" alt="" class="icon-sidebar-menu" />
+                    <p style="display: none;" class="hide-menu">Settings</p>
+                    <span class="down-caret"></span>
+                </a>
+                <div class="collapse dropdown-custom" id="settings">
+                    <ul class="nav nav-collapse">
+                        <li>
+                            <a href="/resetmypassword/form">
+                                <span class="sub-item">Change Password</span>
+                            </a>
+                        </li>
+                        <!-- <li>
+                            <a href="#">
+                                <span class="sub-item">Manage Distributor</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="sub-item">Manage Users</span>
+                            </a>
+                        </li> -->
+
+                    </ul>
+                </div>
+            </li>
+
+
+        </ul>
+    </div>
+</div>
+<!-- End Sidebar -->

@@ -1,0 +1,364 @@
+
+{% extends "custom/basic.html" %}
+
+{% block head_css %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="/static/assets/stylesheets/masters.css" />
+<link rel="stylesheet" type="text/css" href="/static/datatables.min.css" />
+{% endblock %}
+
+
+{% block body %}
+<div id="app">
+    <div class="dashboard">
+        <div>
+            <div></div>
+        </div>
+        <div class="dragdroppable dragdroppable-column">
+            <div>
+                <div class="dashboard-header-custom">
+                    <div class="dashboard-component-header header-large">
+                        <span class="editable-title">Company <small>Master</small></span>
+                    </div>
+                    <div>
+                        <button class="btn-round btn-large" data-toggle="modal" data-target="#myModal"><b>New</b></button>
+                    </div>
+                        
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Send signup link to the new user</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="usr">Email:</label>
+                            <div><input type="text" id="validate" width="30"><span></span></div>
+                            <p id="validEmail" style="margin: 9px 4px 0 0; position: absolute;width: 100px;height: 16px;"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="btn btn-primary" style="border-radius: 16px;" value="Click Me" onclick="sendEmail();" />
+                            <button type="button" class="btn btn-default" style="border-radius: 16px;" data-dismiss="modal">Close</button>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- End modal -->
+
+        <div class="dashboard-content">
+            <!-- The Modal -->
+            <div class="modal update-custom fade" id="editModal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title custom-header">Update Company</h4>
+                            <p class="custom-name-title">Company Name : <span id="company_name_title"></span></p>
+                            <p class="custom-name-title-id">Company ID : <span id="company_id"></span></p>
+
+                        </div>
+                          <div class="modal-body">
+                            <form id="modalForm">
+                                <input type="hidden" name="id" value="">
+                                <div class="form-row">
+
+                                    <div class="form-group col-md-4">
+                                        <label for="company_name" class="form-control-label">Company Name:</label>
+                                        <input type="text" class="form-control" id="company_name">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="organization" class="form-control-label">Organization</label>
+                                        <input type="text" class="form-control" id="organization">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="msp" class="form-control-label">MSP:</label>
+                                        <input type="text" class="form-control" id="msp">
+                                    </div>
+                                </div>
+                                <div class="form-break"></div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="owner_name" class="form-control-label">Owner Name:</label>
+                                        <input type="text" class="form-control" id="owner_name">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="owner_email" class="form-control-label">Owner Email:</label>
+                                        <input type="text" class="form-control" id="owner_email">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="owner_contact" class="form-control-label">Owner Contact:</label>
+                                        <input type="text" class="form-control" id="owner_contact">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="is_active" class="form-control-label">Is Active:</label>
+                                        <input type="text" class="form-control" id="is_active">
+                                    </div>
+                                </div>
+                            </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary style2"
+                                        data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary style1"
+                                        onclick='confirm("Are you sure ?")'>Save</button>
+                                </div>
+                            </form>
+
+                    </div>
+                </div>
+            </div>
+            <div class="grid-container">
+                <div class="tab-content dashboard-component-chart-holder">
+                    <div class="chart-header">
+                        <div class="header"><span class="editable-title">Company Details</span></div>
+                    </div>
+                    <table id="CompanyTable" class="display stripe cell-border" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                {% for col in columns %}
+                                <th class="header">{{col.alias}}</th>
+                                {% endfor %}
+                                <th class="header"></th>
+                            </tr>
+                            <tr class="master-search-custom">
+
+                                {% for col in columns %}
+                                <td>
+                                    <input class="form-control input-sm search" type="text" placeholder="{{col.alias}}"
+                                        name="{{col.name}}">
+                                </td>
+                                {% endfor %}
+                                <td class="search-button"><i class="fa fa-search"></i></td>
+                            </tr>
+                        </thead>
+
+                        <!-- <tfoot>
+                            <tr>
+                                {% for col in columns %}
+                                <th data-name="{{col.name}}" data-alias="{{col.alias}}">{{col.alias}}</th>
+                                {% endfor %}
+                                <th></th>
+                            </tr>
+                        </tfoot> -->
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block tail_js %}
+<script type="text/javascript" src="/static/datatables.min.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+    // Start
+            $("#validate").keyup(function() {
+                var email = $("#validate").val();
+                if (email != 0) {
+                    if (isValidEmailAddress(email)) {
+                        $("#validEmail").hide();
+                    } else {
+                        $("#validEmail").css("color", "red").text("invalid email!!!");
+                    }
+                } else {
+                    $("#validEmail").text("Please provide an email");
+                }
+            });
+            $("#token").hide();
+            $("#token2").hide();
+            $("#tokenButton").click(function() {
+                $("#token").show();
+                $("#token2").show();
+
+                var getUrlParameter = function getUrlParameter(sParam) {
+                    let signUpURL = "http://0.0.0.0:8088/superuser/signup?token=3n4b",
+                        ssPageURL = window.location.search.substring(1);
+                    console.log("sPageURL", ssPageURL);
+
+
+                    let sURLVariables = signUpURL.split('?'),
+                        sParameterName
+                    console.log("sURLVariables .", sURLVariables);
+
+                    sParameterName = sURLVariables[1].split('=');
+                    // console.log("sParameterName", sParameterName);
+                    // console.log("token name", sParameterName[0]);
+                    // console.log("token value", sParameterName[1]);
+
+                    if (sParameterName[1] == sParam) {
+                        console.log("succsss");
+                        location.href = signUpURL;
+                        // return sParam;
+                    } else
+                        return false;
+                };
+                var tech = getUrlParameter('3n4b');
+            });
+
+            isValidEmailAddress = (emailAddress) => {
+                var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+                return pattern.test(emailAddress);
+            }
+
+            sendEmail = (email) => {
+                $api = "/admin/api/companyMaster/new"
+                $email = $("#validate").val();
+                $.ajax({
+                    type:'POST',
+                    url: $api,
+                    data: {
+                        email:$email
+                    },
+                    success:function(res){
+                        console.log("res", res);
+                        $("#modal").close();
+                    }
+                })
+            }
+        })
+        // end
+    window.selectedId = null;
+
+    function toDate(data) {
+        if ((data === null) || (data === "")) {
+            return null;
+        }
+        else {
+            var date = new Date(data);
+            return $.datepicker.formatDate('yy-mm-dd', date);
+        }
+    }
+
+
+    function resetModal(reset_id = true) {
+        if (reset_id) { window.selectedId = null; }
+        $('#modalForm').trigger('reset');
+        $('#company_name').text('');
+        $('#company_id').text('');
+    }
+
+
+    function setModalData() {
+        $.ajax({
+            url: '/admin/api/companyMaster/' + window.selectedId,
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (result) {
+                if (result.hasError == true) {
+                    if (result.error_code == 'AUTH_FAILURE') {
+                        //wrong password
+                        console.log('Recieved authentication error');
+                        $('#login_errors_auth').fadeIn();
+                    }
+                    else {
+                        //generic error here
+                        $('#login_errors_unknown').fadeIn();
+                    }
+                }
+                if (result === undefined) {
+                    $('#editModal').modal('hide');
+                    alert('No response received');
+                    return;
+                }
+                $('#company_name').text(result[0]['company_name']);
+                $('#company_id').text(result[0]['id']);
+
+                form = $('#modalForm');
+                form.find('#company_name').val(result[0]['company_name']);
+                form.find('#owner_name').val(result[0]['owner_name']);
+                form.find('#owner_contact').val(result[0]['owner_contact'])
+            },
+        });
+    }
+
+
+    $(document).ready(function () {
+
+        // Initialise
+        var company_table = $('#CompanyTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "searching": false,
+            "scrollY": '50vh',
+            "scrollCollapse": true,
+            "orderCellsTop": true,
+            "columns": [
+                {% for col in columns %}
+            { 'data': '{{ col.name }}' },
+            {% endfor %}
+            {
+            "class": "fa fa-edit edit-button",
+            "orderable": false,
+            "data": null,
+            "defaultContent": ""
+        },
+        ],
+        "ajax": {
+        "url": "/admin/api/companyMaster",
+    },
+        "order" : [[0, 'desc']],
+    });
+    // On Submit Event of Form
+    $('#modalForm').bind('submit', function (e) {
+        e.preventDefault();
+
+        post_data = {};
+        post_data['id'] = window.selectedId;
+        post_data['company_name'] = document.getElementById("company_name").value;
+        post_data['owner_name'] = document.getElementById("owner_name").value;
+
+        console.log(document.getElementById("company_name").value)
+        $.post("/admin/api/companyMaster/" + window.selectedId,
+            post_data,
+            function (response, status, xhr) {
+            }).done(function (response, status) {
+                resetModal(false);
+                $('#editModal').modal('hide');
+                company_table.ajax.reload();
+            }).fail(function (response, status) {
+                alert("Failed updating records. Try again");
+            });
+
+    });
+
+
+    // Attaching Event Listeners
+    $('.search-button').on('click', company_table.draw);
+    $('#open_modal').on('click', function () { $('#editModal').modal('show'); });
+    $('#editModal').bind('shown', function () {
+        resetModal(false);
+        if (window.selectedId === null) {
+            $('#editModal').modal('hide');
+            alert('Invalid row selected');
+            return;
+        }
+        setModalData();
+    });
+    $('#CompanyTable tbody').on('click', 'tr td.edit-button', function () {
+        var tr = $(this).closest('tr').first();
+        var row = company_table.row(tr);
+        var id = row.data().id;
+        window.selectedId = id;
+        $('#editModal').modal('show');
+    });
+
+    $('#editModal').bind('hide', resetModal);
+});
+</script>
+{% endblock %}

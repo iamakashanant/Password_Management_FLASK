@@ -1,0 +1,74 @@
+{% extends "custom/basic.html" %}
+{% block head_css %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="/static/assets/stylesheets/masters.css" />
+{% endblock %}
+{% block body %}
+<div class="dashboard">
+    <div class="row">
+        <div id="alert-container">
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">Reset Password Form</h4>
+            </div>
+            <div id="Home" class="tab-pane active">
+                <form id="resetMyPasswordForm" action="resetmypassword/form" method="post">
+                    <div class="table-responsive">
+                            <input type="hidden" name="csrf_token" id="csrf_token"
+                            value="{{ csrf_token() if csrf_token else '' }}"
+                          >
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td class="col-lg-2">
+                                        <label for="password" control-label="">Password<strong
+                                                style="color: red">*</strong>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <input class="form-control" id="password" name="password" placeholder="Password" type="password" value="">
+                                        <span class="help-block">Please use a good password policy, this application
+                                            does not check this for you</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-lg-2">
+                                        <label for="conf_password" control-label="">
+                                            Confirm Password
+
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <input class="form-control" id="conf_password" name="conf_password" placeholder="Confirm Password" type="password" value="">
+                                        <span class="help-block">Please rewrite the password to confirm</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="well well-sm">
+                        <button type="submit" class="btn  btn-sm btn-primary">Save
+                            <i class="fa fa-save"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block tail_js %}
+<script type="text/javascript" src="/static/datatables.min.js"></script>
+<script>
+    // $("#resetMyPasswordForm").submit(function (e) {
+    //     $.post("resetmypassword/form?json=true", { csrf_token: '{{ csrf_token() }}', password: 'asdfasdf', conf_password: 'fasd' }, function (data, status) {
+    //         console.log(data)
+    //         console.log(status)
+    //     });
+    // e.preventDefault();
+    // });
+</script>
+{% endblock %}

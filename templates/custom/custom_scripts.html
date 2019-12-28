@@ -1,0 +1,207 @@
+<link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
+
+<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.css" />
+<link rel="stylesheet" type="text/css"
+    href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.js" type="text/javascript"
+    charset="utf-8"></script>
+
+<link rel="stylesheet" type="text/css" href="/static/assets/stylesheets/orb.css">
+<script src="/static/assets/react.js" type="text/javascript"></script>
+<script src="/static/assets/orb.js" type="text/javascript"></script>
+
+<script>
+    setTimeout(function () {
+        $('.loader_bg').fadeToggle();
+    }, 2000);
+    var dropdown = document.getElementsByClassName("dropdown-btn");
+    for (var i = 0; i < dropdown.length; i++) {
+        dropdown[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var dropdownContent = this.nextElementSibling;
+            if (dropdownContent.style.display === "block") {
+                dropdownContent.style.display = "none";
+            } else {
+                dropdownContent.style.display = "block";
+            }
+        });
+    }
+
+    function remove_filter(id_to_remove, ele) {
+        id_to_remove = atob(id_to_remove);
+        var new_data = $.grep($('#global_search_filter').val(), function (value) {
+            return value != id_to_remove;
+        });
+        $(ele).parent('li').remove();
+        // console.log(new_data);
+        $("#global_search_filter option[value='" + id_to_remove + "']").remove();
+        $('#global_search_filter').val(new_data).trigger('change');
+        $('#global_search_form').submit();
+    }
+    $(document).ready(function () {
+        function format(state) {
+            return state;
+        }
+        var colMap = {
+            'salesperson_name': '/static/assets/images/SalesTeam.svg',
+            'customer_name': '/static/assets/images/Customer.svg',
+            'continent': '/static/assets/images/Map.svg',
+            'subcontinent': '/static/assets/images/Map.svg',
+            'country': '/static/assets/images/Map.svg',
+            'state': '/static/assets/images/Map.svg',
+            'district': '/static/assets/images/Map.svg',
+            'city': '/static/assets/images/Map.svg',
+            'ward': '/static/assets/images/Map.svg',
+            'tehsil': '/static/assets/images/Map.svg',
+            'area': '/static/assets/images/Map.svg',
+            'subarea': '/static/assets/images/Map.svg',
+            'item_name': '/static/assets/images/Item.svg',
+            'brandname': '/static/assets/images/Dash.svg',
+            'category': '/static/assets/icons/PivotView.svg',
+            'subcategory': '/static/assets/icons/PivotView.svg',
+        };
+        $('#global_search_filter').select2({
+            minimumInputLength: 2,
+            multiple: true,
+            formatResult: format,
+            formatSelection: format,
+            // closeOnSelect: false,
+            escapeMarkup: function (m) { return m; },
+            ajax: {
+                url: "{{url_for('get_raw_data')}}",
+                data: function (params) {
+                    var query = {
+                        q: params.term,
+                        type: 'public'
+                    }
+                    return query;
+                },
+                processResults: function (data) {
+                    var results = [];
+                    var tempObj = {};
+                    // console.log(data);
+                    Object.keys(data).forEach(function (k) {
+                        var val = data[k];
+                        var ele = val['field_data'];
+                        var key = val['field_name'];
+                        if (!tempObj[key])
+                            tempObj[key] = [];
+                        tempObj[key].push(ele);
+                    });
+                    var keysSorted = Object.keys(tempObj).sort(function (a, b) { return tempObj[a].length - tempObj[b].length });
+                    for (var i = 0; i < keysSorted.length; i++) {
+                        var k = keysSorted[i];
+                        for (var j = 0; j < tempObj[k].length; j++) {
+                            var element = tempObj[k][j];
+                            var key = (colMap[k] ? colMap[k] : '/static/assets/images/Dash.svg');
+                            var option = {};
+                            option['id'] = k + '__1__' + element.replace('"', '/"');
+                            option['text'] = '<img src="' + key + '" class="search-small-img">' + ' ' + element;
+                            results.push(option);
+                        }
+                    }
+                    return {
+                        results: results
+                    };
+                }
+            }
+        }).on('select2:select', function (e) {
+            $('#selected_global').append('<li class="global-selections"><button onclick="remove_filter(\'' + btoa(e.params.data.id) + '\',this)">X</button>  ' + e.params.data.text + '</li>');
+            $('#global_search_form').submit();
+        }).on('select2:unselect', function (e) {
+            $('#global_search_form').submit();
+        });
+
+        setTimeout(function () {
+            $(".grid-row.slick-init").slick({
+                slidesToShow: 3,
+                slidesToScroll: 3,
+                touchMove: false,
+                swipe: false,
+                draggable: false,
+                appendArrows: '.slick_arrow_nav',
+            });
+            $('.resizable-container').removeAttr("style");
+        }, 1000);
+        setInterval(function () {
+            $('.select2-search__field').attr('placeholder', 'Press space bar for quick search');
+            $('.resizable-container').removeAttr("style");
+            $('.is-loading').removeAttr("style");
+        }, 500);
+        $('.btn.btn-toggle.toggle-sidebar').on('click', function () {
+            toggleSidebar();
+        });
+    });
+    function initDatePicker() {
+        var start = localStorage.getItem('date_range_filter_start');
+        var end = localStorage.getItem('date_range_filter_end');
+        start = (start ? moment(start) : moment().startOf('month'));
+        end = (end ? moment(end) : moment());
+        $('#date_range_filter').daterangepicker({
+            autoApply: true,
+            maxDate: new Date(),
+            locale: { format: 'DD MMM YYYY' },
+            startDate: start.format('DD MMM YYYY'),
+            endDate: end.format('DD MMM YYYY'),
+            showDropdowns: true,
+        }, function (start, end, label) {
+            $('#billDate_filter').val("'" + start.format('YYYY-MM-DD') + "' AND '" + end.format('YYYY-MM-DD') + "'");
+            localStorage.setItem('date_range_filter_start', start.format('DD MMM YYYY'));
+            localStorage.setItem('date_range_filter_end', end.format('DD MMM YYYY'));
+            $('#global_search_form').submit();
+        });
+    }
+    initDatePicker();
+
+    function onClickFilter(ID, key, value, filter) {
+        value = atob(value);
+        var id = $('#onclick_filter_btn').data('id');
+        var k = $('#onclick_filter_btn').data('key');
+        var v = $('#onclick_filter_btn').data('value');
+        var f = $('#onclick_filter_btn').data('filter');
+        var active = 1;
+        if (ID == id && key == k && value == v && filter == f) {
+            active = 0, value = '';
+        }
+        $('#onclick_filter_btn').data('active', active);
+        $('#onclick_filter_btn').data('id', ID);
+        $('#onclick_filter_btn').data('key', key);
+        $('#onclick_filter_btn').data('value', value);
+        $('#onclick_filter_btn').data('filter', filter);
+        $('#onclick_filter_btn').click();
+    }
+
+    function toggleSidebar() {
+        $('.sidebar-max').toggleClass('sidebar-mini');
+        $('.content-body-max').toggleClass('content-body-mini');
+        $('.sidebar .nav>.nav-item a p').toggle();
+        // $('.logo').toggle();
+        // $('.small-logo').toggle();
+    }
+
+    document.onkeypress = function (e) {
+        e = e || window.event;
+        // console.log(e.keyCode);
+        if (e.keyCode == 32 && $('.select2-search__field').length > 0 && !$('.select2-search__field').is(":focus")) {
+            e.preventDefault();
+            $('.select2-search__field').focus();
+            return false;
+        }
+    };
+    function allowDrop(event) {
+        event.preventDefault();
+        event.target.style.border = "4px dotted green";
+    }
+
+    function removeDrop(event) {
+        event.preventDefault();
+        event.target.style.border = "";
+    }
+
+    $('.dashboard').children().children()[0].remove();
+</script>

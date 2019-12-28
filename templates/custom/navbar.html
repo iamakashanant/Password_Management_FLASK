@@ -1,0 +1,50 @@
+{#
+    Basic customization on navbar
+#}
+
+<div class="main-header">
+  <!-- Navbar Header -->
+  <nav class="navbar {{menu.extra_classes}}">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <div class="nav-toggle">
+          <button class="btn btn-toggle toggle-sidebar">
+            <i class="fa fa-bars"></i>
+          </button>
+        </div>
+        <!-- Logo Header -->
+        <div class="logo-header">
+          <a href="{{ logo_target_path }}" class="logo">
+            <img width="{{ app_icon_width }}" src="{{ appbuilder.app_icon }}" alt="{{ appbuilder.app_name }}"
+              class="navbar-brand">
+          </a>
+          <a href="{{ logo_target_path }}" class="small-logo" style="display: none;">
+            <img width="{{ app_icon_sm_width }}" src="{{ app_icon_sm }}" alt="{{ appbuilder.app_name }}"
+              class="navbar-brand">
+          </a>
+          <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
+            data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon">
+              <i class="fa fa-ellipsis-v"></i>
+            </span>
+          </button>
+          <button class="topbar-toggler more"><i class="fa fa-bars"></i></button>
+
+        </div>
+        <!-- End Logo Header -->
+      </div>
+      <!-- <div class="collapse navbar-collapse"> -->
+      <div class="nav navbar-nav navbar-left">
+        {% if is_custom %}
+        {% include 'custom/search.html' %}
+        {% endif %}
+
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        {% include 'appbuilder/navbar_right.html' %}
+      </ul>
+      <!-- </div> -->
+    </div>
+  </nav>
+
+</div>

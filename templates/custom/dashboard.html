@@ -1,0 +1,12 @@
+{% extends "custom/basic.html" %}
+{% block body %}
+  {% if companies %}
+    {% block begin_content scoped %}
+      <div class="table-responsive">
+      <table class="table table-hover">
+    {% endblock %}
+  {% else %}
+    <div id="app" data-bootstrap="{{ bootstrap_data }}" />
+
+  {% endif %}
+{% endblock %}

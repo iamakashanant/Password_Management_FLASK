@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>MAGENTA BI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="/static/appbuilder/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/appbuilder/css/font-awesome.min.css" rel="stylesheet">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+            <script src="/static/appbuilder/js/html5shiv.js"></script>
+            <script src="/static/appbuilder/js/respond.min.js"></script>
+         <![endif]-->
+    <link href="/static/appbuilder/datepicker/bootstrap-datepicker.css" rel="stylesheet">
+    <link href="/static/appbuilder/select2/select2.css" rel="stylesheet">
+    <link href="/static/appbuilder/css/flags/flags16.css" rel="stylesheet">
+    <link href="/static/appbuilder/css/ab.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/static/assets/images/favicon.png">
+    <script src="/static/appbuilder/js/jquery-latest.js"></script>
+    <script src="/static/appbuilder/js/ab_filters.js"></script>
+    <script src="/static/appbuilder/js/ab_actions.js"></script>
+</head>
+
+<body>
+    <style>
+        .main-wrapper-login {
+            background-color: #fff;
+        }
+
+        #loginbox {
+            display: flex;
+            align-items: center;
+        }
+
+        .bg-outer-div {
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%
+        }
+
+        .bg-quotes {
+            background-image: url(/static/assets/images/bg-signin.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            width: 100%;
+            height: 100%;
+            -ms-transform-origin: 17% 6%;
+            -webkit-transform-origin: 17% 6%;
+            transform-origin: 17% 6%;
+            -ms-transform: scale(1.1) rotate(32deg);
+            -webkit-transform: scale(1.1) rotate(32deg);
+            transform: scale(1.1) rotate(32deg);
+            position: absolute;
+        }
+
+        .quotes-para h2 {
+            font-size: 20px;
+            color: #eee;
+            text-align: left;
+            padding: 0px 90px;
+            position: absolute;
+            line-height: 30px;
+            width: 600px;
+            font-weight: 600;
+        }
+
+        .login-form-with-logo {
+            padding: 0px 60px;
+        }
+
+        input.form-control {
+            background-color: #f1f5f8;
+            border: 1.2px solid #f1f5f8;
+            box-shadow: none !important;
+            border-radius: 5px;
+            height: 42px;
+
+        }
+
+        .input-group-addon {
+            color: #858585;
+            border: none;
+            background-color: #f1f5f8;
+            max-width: 45px;
+            border-radius: 5px;
+        }
+
+        .form-control:focus {
+            border: 1.2px solid #eaeaea;
+            background-color: transparent;
+            box-shadow: none !important;
+        }
+
+        .signin-btn {
+            background-color: #6673df;
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            margin-bottom: 40px;
+        }
+
+        .signin-btn:hover {
+            background-color: #858585;
+            color: #fff;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            height: 42px;
+        }
+
+        .control-label {
+            font-size: 14px;
+            text-transform: uppercase;
+            color: #858585;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .logo-signin {
+            margin-bottom: 40px;
+        }
+
+        .blue-text {
+            color: #6673df;
+        }
+
+        .blue-text:hover {
+            color: #858585;
+        }
+
+        .gray-text {
+            color: #858585;
+        }
+
+        @media only screen and (max-width: 1366px) {
+
+            /*  #loginbox{
+                align-items: flex-start;
+            }
+            .login-form-with-logo{
+                margin-top: 50px;
+            }
+             .bg-quotes{
+                ms-transform-origin: 22% 40%;
+                -webkit-transform-origin: 22% 40%;
+                transform-origin: 22% 40%;
+                -ms-transform: scale(2) rotate(130deg);
+                -webkit-transform: scale(2) rotate(130deg);
+                transform: scale(2) rotate(130deg);
+            }
+            .bg-outer-div{
+                overflow: visible;
+            }
+            .quotes-para h2{
+                padding: 70px;
+            } */
+            #loginbox {
+                justify-content: center;
+            }
+
+            .bg-outer-div {
+                display: none;
+            }
+
+            .login-form-with-logo {
+                margin-top: 100px;
+            }
+        }
+    </style>
+    <div class="container-fluid main-wrapper-login">
+        <div id="loginbox" class="mainbox row">
+            <div class="col-sm-12 col-lg-8 bg-outer-div">
+                <div class="bg-quotes">
+                </div>
+                <div class="quotes-para">
+                    <h2>Business is all about the customer: what the customer wants and what they get. Generally, every
+                        customer wants a product or service that solves their problem, worth their money, and is
+                        delivered
+                        with amazing customer service.</h2>
+                </div>
+
+            </div>
+            <div class="col-sm-8 col-lg-4 login-form-with-logo">
+                <div class="logo-signin">
+                    <a class="" href="/">
+                        <img width="240" src="/static/assets/images/magenta_logo.png">
+                    </a>
+                </div>
+                <div class="clearfix"></div>
+                {% block content%}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    <script src="/static/appbuilder/js/bootstrap.min.js"></script>
+    <script src="/static/appbuilder/datepicker/bootstrap-datepicker.js"></script>
+    <script src="/static/appbuilder/select2/select2.js"></script>
+    <script src="/static/appbuilder/js/ab.js"></script>
+</body>
+
+</html>

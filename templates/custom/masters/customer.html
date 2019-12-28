@@ -1,0 +1,390 @@
+{% extends "custom/basic.html" %}
+{% block head_css %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="/static/assets/stylesheets/header_top.css" />
+<link rel="stylesheet" type="text/css" href="/static/assets/stylesheets/masters.css" />
+<link rel="stylesheet" type="text/css" href="/static/datatables.min.css" />
+{% endblock %}
+
+
+{% block body %}
+<div id="app">
+    <div class="dashboard">
+        <div>
+            <div></div>
+        </div>
+        <div class="dragdroppable dragdroppable-column">
+            <div>
+                <div class="dashboard-header-custom">
+                    <div class="dashboard-component-header header-large">
+                        <span class="editable-title">Customer <small>(Master)</small></span>
+                    </div>
+                    <div class="upload-download-btn-custom">
+                        <!-- <button class="btn-round btn-dark" id="uploadModalBtn" data-toggle="modal" data-target="#uploadModal"> Upload </button> -->
+                        <a href="/api/masters/customerdata?101" target="_blank"><button class="btn-round btn-dark" id="download"> Download </button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-content">
+            <!-- The Modal -->
+            <div class="modal update-custom fade" id="editModal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title custom-header">Update Customer</h4>
+                            <p class="custom-name-title">Customer Name : <span id="customer_name"></span></p>
+                            <p class="custom-name-title-id">Customer ID : <span id="customer_id"></span></p>
+                        </div>
+                        <form id="modalForm">
+                            <div class="modal-body">
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <label for="alias" class="form-control-label">Alias:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="customer_alias"
+                                            name="customer_alias">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="salestarget" class="form-control-label">Sales Target:</label>
+                                        <input type="number" min="0" class="form-control" autocomplete="off" id="salestarget">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="creditlimit" class="form-control-label">Credit Limit:</label>
+                                        <input type="number" min="0" class="form-control" autocomplete="off" id="creditlimit">
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="creditdays" class="form-control-label">Credit Days:</label>
+                                        <input type="number" min="0" class="form-control" autocomplete="off" id="creditdays">
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="pdcdays" class="form-control-label">PDC Days:</label>
+                                        <input type="number" min="0" class="form-control" autocomplete="off" id="pdcdays">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="owner" class="form-control-label">Owner:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="owner">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="salesperson_name" class="form-control-label">Assignee:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="salesperson_name">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="email" class="form-control-label">Email:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="email">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="mobile" class="form-control-label">Mobile:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="mobile">
+                                    </div>
+                                </div>
+                                <div class="form-break"></div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="country" class="form-control-label">Country:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="country">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="state" class="form-control-label">State:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="state">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="district" class="form-control-label">District:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="district">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="city" class="form-control-label">City:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="city">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="area" class="form-control-label">Area:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="area">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="pincode" class="form-control-label">Pincode:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="pincode">
+                                    </div>
+                                </div>
+
+                                <div class="form-break"></div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="segment" class="form-control-label">Segment:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="segment">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="segmentgroup" class="form-control-label">Segment Group:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="segmentgroup">
+                                    </div>
+                                </div>
+                                <div class="form-break"></div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="birthday" class="form-control-label">Birthday:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="birthday">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="anniversary" class="form-control-label">Anniversary:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="anniversary">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="businessday" class="form-control-label">Business Day:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="businessday">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="associationday" class="form-control-label">Association Day:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="associationday">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary style2"
+                                    data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary style1"
+                                    onclick='confirm("Are you sure ?")'>Save
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal -->
+            <div id="uploadModal" class="modal update-custom fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title custom-header">Upload Customer Data File</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form method='' action='' enctype="multipart/form-data">
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <label class="form-control-label">Select file :</label>
+                                        <input type='file' name='file' id='file' class='form-control'>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary style2" data-dismiss="modal">Close</button>
+                            <input type='button' class='btn btn-primary style1' value='Upload' id='upload'>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-container">
+                <div class="tab-content dashboard-component-chart-holder">
+                    <div class="chart-header">
+
+                        <div class="header">
+                            <span class="editable-title">Customer Details</span>
+                        </div>
+                    </div>
+                    <table id="CustomerTable" class="display stripe cell-border" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                {% for col in columns %}
+                                <th class="header" width="{{col.width}}%">{{col.alias}}</th>
+                                {% endfor %}
+                                <th class="header"></th>
+                            </tr>
+                            <tr class="master-search-custom">
+                                {% for col in columns %}
+                                <td>
+                                    <input class="form-control input-sm search" type="text" placeholder="{{col.alias}}"
+                                        name="{{col.name}}">
+                                </td>
+                                {% endfor %}
+                                <td class="search-button"><i class="fa fa-search"></i></td>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+
+    {% block tail_js %}
+    <script type="text/javascript" src="/static/datatables.min.js"></script>
+    <script type="text/javascript">
+
+        window.selectedId = null;
+
+        function toDate(data) {
+            if ((data === null) || (data === "")) {
+                return null;
+            }
+            else {
+                var date = new Date(data);
+                return $.datepicker.formatDate('yy-mm-dd', date);
+            }
+        }
+
+
+        function resetModal(reset_id = true) {
+            if (reset_id) { window.selectedId = null; }
+            $('#modalForm').trigger('reset');
+            $('#customer_name').text('');
+            $('#customer_id').text('');
+        }
+
+
+        function setModalData() {
+            $.ajax({
+                url: '/api/masters/customer/' + window.selectedId,
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (result) {
+                    if (result === undefined) {
+                        $('#editModal').modal('hide');
+                        alert('No response received');
+                        return;
+                    }
+                    $('#customer_name').text(result[0]['customer_name']);
+                    $('#customer_id').text(result[0]['id']);
+                    $('#modalForm').find('input').each(function () {
+                        var id = $(this).attr('id');
+                        if (['birthday', 'anniversary', 'businessday', 'associationday'].indexOf(id) != -1) {
+                            $(this).datepicker({ dateFormat: 'dd/mm/yy' }).val(toDate(result[0][id]));
+                        }
+                        else {
+                            $(this).val(result[0][id]);
+                        }
+                    });
+                },
+            });
+        }
+
+
+        $(document).ready(function () {
+            // Initialise
+            var customer_table = $('#CustomerTable').DataTable({
+                processing: true,
+                serverSide: true,
+                searching: false,
+                scrollY: '50vh',
+                scrollCollapse: true,
+                orderCellsTop: true,
+                pageLength: 100,
+                lengthMenu: [
+                    [50, 100, 200, 500, 1000],
+                    ['50', '100', '200', '500', '1000']
+                ],
+                ajax: {
+                    "url": "/api/masters/customer",
+                    "data": function (d) {
+                        $('.dataTables_scrollBody input.search').removeClass('search');
+                        $.each($('.search'), function (index, value) {
+                            d['search_' + d.columns[index]['data']] = $(value).val();
+                        });
+                    }
+                },
+                columns: [
+                    {% for col in columns %} { 'data': '{{ col.name }}' }, {% endfor %}
+                    {
+                class: "fa fa-edit edit-button",
+                orderable: false,
+                data: null,
+                defaultContent: ""
+            },
+                ],
+            "order" : [[0, 'asc']]
+        });
+
+
+        // On Submit Event of Form
+        $('#modalForm').bind('submit', function (e) {
+            e.preventDefault();
+
+            post_data = {};
+            post_data['id'] = window.selectedId;
+            post_data['customer_name'] = $('#customer_name').text();
+            $('#modalForm').find('input').each(function () {
+                var id = $(this).attr('id');
+                if (['salestarget', 'creditlimit', 'creditdays', 'pdcdays'].indexOf(id) != -1) {
+                    post_data[id] = $(this).val() ? parseFloat($(this).val()) : 0;
+                }
+                else {
+                    post_data[id] = $(this).val();
+                }
+            });
+
+            $.post("/api/masters/customer/" + window.selectedId,
+                post_data,
+                function (response, status, xhr) {
+                }).done(function (response, status) {
+                    $('#editModal').modal('hide');
+                    customer_table.ajax.reload();
+                }).fail(function (response, status) {
+                    alert("Failed updating records. Try again");
+                });
+        });
+
+
+        // Upload File Dialog
+        $('#upload').click(function () {
+
+            var fd = new FormData();
+            var files = $('#file')[0].files[0];
+            fd.append('file', files);
+
+            $.ajax({
+                url: '/api/masters/customerdata',
+                type: 'post',
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response != 0) {
+                        console.log(response);
+                        alert("Done");
+                        $('#uploadModal .close').click()
+                    } else {
+                        alert('file not uploaded');
+                    }
+                }
+            });
+        });
+
+        // Attaching Event Listeners
+        $('.search-button').on('click', customer_table.draw);
+        $('#open_modal').on('click', function () { $('#editModal').modal('show'); });
+
+        $('#CustomerTable tbody').on('click', 'tr td.edit-button', function () {
+            var tr = $(this).closest('tr').first();
+            var row = customer_table.row(tr);
+            // console.log(row.data());
+            var id = row.data().id;
+            window.selectedId = id;
+            if (window.selectedId === null) {
+                $('#editModal').modal('hide');
+                alert('Invalid row selected');
+                return;
+            }
+            setModalData();
+            $('#editModal').modal('show');
+        });
+
+        $('#editModal').bind('hide', resetModal);
+
+});
+    </script>
+    {% endblock %}

@@ -1,0 +1,340 @@
+{% extends "custom/basic.html" %}
+{% block head_css %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="/static/assets/stylesheets/masters.css" />
+<link rel="stylesheet" type="text/css" href="/static/datatables.min.css" />
+{% endblock %}
+{% block body %}
+
+<div id="app">
+    <div class="dashboard">
+        <div>
+            <div></div>
+        </div>
+        <div class="dragdroppable dragdroppable-column">
+            <div>
+                <div class="dashboard-header-custom">
+                    <div class="dashboard-component-header header-large">
+                        <span class="editable-title">Product <small>(Master)</small></span>
+                    </div>
+                    <div class="upload-download-btn-custom">
+                        <!-- <button class="btn-round btn-dark" id="uploadModalBtn" data-toggle="modal" data-target="#uploadModal"> Upload </button> -->
+                        <a href="/api/masters/productdata?101" target="_blank"><button class="btn-round btn-dark"
+                                id="download"> Download </button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-content">
+            <!-- The Modal -->
+            <div class="modal update-custom fade" id="editModal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title custom-header">Update Product Details</h4>
+                            <p class="custom-name-title">Product Name : <span id="item_name"></span></p>
+                        </div>
+                        <div class="modal-body">
+                            <form id="modalForm">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="item_alias" class="form-control-label">Alias:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="item_alias" name="item_alias">
+                                    </div>
+
+                                    <div class="form-group col-md-4">
+                                        <label for="brandname" class="form-control-label">Brand Name:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="brandname" name="brandname">
+                                    </div>
+
+                                    <div class="form-group col-md-4">
+                                        <label for="brandgroup" class="form-control-label">Brand Group:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="brandgroup" name="brandgroup">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+
+
+                                    <div class="form-group col-md-4">
+                                        <label for="subbrandname" class="form-control-label">SubBrand Name:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="subbrandname" name="subbrandname">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="sbu" class="form-control-label">SBU:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="sbu" name="sbu">
+                                    </div>
+
+                                    <div class="form-group col-md-4">
+                                        <label for="subsbu" class="form-control-label">Sub SBU:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="subsbu" name="subsbu">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="category" class="form-control-label">Category:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="category" name="category">
+                                    </div>
+
+                                    <div class="form-group col-md-4">
+                                        <label for="subcategory" class="form-control-label">Sub Category</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="subcategory" name="subcategory">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="unit" class="form-control-label">Unit:</label>
+                                        <input type="text" class="form-control" autocomplete="off" id="unit" name="unit">
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary style2" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary style1"
+                                onclick='confirm("Are you sure ?")'>Save
+                            </button>
+
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal -->
+            <div id="uploadModal" class="modal update-custom fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title custom-header">Upload Product Data File</h4>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Form -->
+                            <form method='' action='' enctype="multipart/form-data">
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <label class="form-control-label">Select file :</label>
+                                        <input type='file' name='file' id='file' class='form-control'>
+                                    </div>
+
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary style2" data-dismiss="modal">Close</button>
+                            <input type='button' class='btn btn-primary style1' value='Upload' id='upload'>
+                        </div>
+                        </form>
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="grid-container">
+                <div class="tab-content dashboard-component-chart-holder">
+                    <div class="chart-header">
+
+                        <div class="header">
+                            <span class="editable-title">Product Details</span>
+                        </div>
+                    </div>
+                    <table id="ProductTable" class="display stripe cell-border" style="width:100%">
+                        <thead>
+                            <tr>
+                                {% for col in columns %}
+                                <th class="header">
+                                    {{col.alias}}
+                                </th>
+                                {% endfor %}
+                                <th class="header"></th>
+                            </tr>
+                            <tr class="master-search-custom">
+                                {% for col in columns %}
+                                <td>
+                                    <input class="form-control input-sm search" type="text" placeholder="{{col.alias}}"
+                                        name="{{col.name}}">
+                                </td>
+                                {% endfor %}
+                                <td class="search-button"><i class="fa fa-search"></i></td>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block tail_js %}
+    <script type="text/javascript" src="/static/datatables.min.js"></script>
+    <script type="text/javascript">
+
+        window.selectedId = null;
+
+        function toDate(data) {
+            if ((data === null) || (data === "")) {
+                return null;
+            }
+            else {
+                var date = new Date(data);
+                return $.datepicker.formatDate('yy-mm-dd', date);
+            }
+        }
+
+
+        function resetModal(reset_id = true) {
+            if (reset_id) { window.selectedId = null; }
+            $('#modalForm').trigger('reset');
+            $('#product_name').text('');
+            $('#product_id').text('');
+        }
+
+
+        function setModalData() {
+            $.ajax({
+                url: '/api/masters/product/' + window.selectedId,
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (result) {
+                    if (result === undefined) {
+                        $('#editModal').modal('hide');
+                        alert('No response received');
+                        return;
+                    }
+                    $('#item_name').text(result[0]['item_name']);
+                    $('#id').text(result[0]['id']);
+
+                    form = $('#modalForm');
+                    $('#modalForm').find('input').each(function () {
+                        var id = $(this).attr('id');
+                        if (['birthday', 'anniversary', 'businessday', 'associationday'].indexOf(id) != -1) {
+                            $(this).datepicker({ dateFormat: 'dd/mm/yy' }).val(toDate(result[0][id]));
+                        }
+                        else {
+                            $(this).val(result[0][id]);
+                        }
+                    });
+
+                },
+            });
+        }
+
+
+        $(document).ready(function () {
+
+            // Initialise
+            var product_table = $('#ProductTable').DataTable({
+                processing: true,
+                serverSide: true,
+                searching: false,
+                scrollY: '50vh',
+                scrollCollapse: true,
+                orderCellsTop: true,
+                pageLength: 100,
+                lengthMenu: [
+                    [50, 100, 200, 500, 1000],
+                    ['50', '100', '200', '500', '1000']
+                ],
+                ajax: {
+                    "url": "/api/masters/product",
+                    "data": function (d) {
+                        $('.dataTables_scrollBody input.search').removeClass('search');
+                        $.each($('.search'), function (index, value) {
+                            d['search_' + d.columns[index]['data']] = $(value).val();
+                        });
+                    }
+                },
+                columns: [
+                    {% for col in columns %}
+                        { 'data': '{{ col.name }}' },
+                {% endfor %}
+                    {
+                "class": "fa fa-edit edit-button",
+                "orderable": false,
+                "data": null,
+                "defaultContent": ""
+            },
+                ],
+            order : [[0, 'asc']]
+    });
+
+
+        // On Submit Event of Form
+        $('#modalForm').bind('submit', function (e) {
+            e.preventDefault();
+
+            post_data = {};
+            post_data['id'] = window.selectedId;
+            post_data['item_name'] = $('#item_name').text();
+            $('#modalForm').find('input').each(function () {
+                var id = $(this).attr('id');
+                post_data[id] = $(this).val();
+            });
+
+            $.post("/api/masters/product/" + window.selectedId,
+                post_data,
+                function (response, status, xhr) {
+                }).done(function (response, status) {
+                    $('#editModal').modal('hide');
+                    product_table.ajax.reload();
+                }).fail(function (response, status) {
+                    alert("Failed updating records. Try again");
+                });
+
+        });
+
+
+        // Upload File Dialog
+        $('#upload').click(function () {
+
+            var fd = new FormData();
+            var files = $('#file')[0].files[0];
+            fd.append('file', files);
+
+            $.ajax({
+                url: '/api/masters/productdata',
+                type: 'post',
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response != 0) {
+                        console.log(response);
+                        alert("Done");
+                        $('uploadModal .close').click()
+                    } else {
+                        alert('file not uploaded');
+                    }
+                }
+            });
+        });
+
+        // Attaching Event Listeners
+        $('.search-button').on('click', product_table.draw);
+        $('#open_modal').on('click', function () { $('#editModal').modal('show'); });
+
+        $('#ProductTable tbody').on('click', 'tr td.edit-button', function () {
+            var tr = $(this).closest('tr').first();
+            var row = product_table.row(tr);
+            var id = row.data().id;
+            window.selectedId = id;
+            if (window.selectedId === null) {
+                $('#editModal').modal('hide');
+                alert('Invalid row selected');
+                return;
+            }
+            setModalData();
+            $('#editModal').modal('show');
+        });
+
+        $('#editModal').bind('hide', resetModal);
+
+});
+    </script>
+    {% endblock %}

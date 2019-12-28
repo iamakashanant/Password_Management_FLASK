@@ -1,0 +1,26 @@
+{% extends "custom/basic.html" %}
+
+{% block head_css %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="/static/assets/stylesheets/masters.css" />
+<link rel="stylesheet" type="text/css" href="/static/datatables.min.css" />
+{% endblock %}
+
+
+
+{% block body %}
+<div id="app">
+    <div class="dashboard">
+        <h1> HEY USER </h1>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block tail_js %}
+<script type="text/javascript" src="/static/datatables.min.js"></script>
+{% endblock %}
+
+
+<h1> HEY USER </h1>
